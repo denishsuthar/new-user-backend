@@ -83,25 +83,21 @@ export const getUserDetails = catchAsyncError(async (req,res,next) =>{
 });
 
 // Update User Profile
-export const updateUserProfile = catchAsyncError(async (req,res,next) =>{
-    const newUserData = {
-        name: req.body.name,
-        email: req.body.email,
-    };
+export const updateUserProfile = catchAsyncError(async(req, res, next)=>{
+    const {name, email} = req.body
 
-    if(!req.body.name || !req.body.email) return next(new ErrorHandler("Enter Name & Email", 400));
+    const user = await User.findById(req.user.id);
+    if(name) user.name = name;
+    if(email) user.email = email;
 
-    const user = await User.findByIdAndUpdate(req.user.id, newUserData,{
-        new:true,
-        runValidators:true,
-        useFindAndModify:false,
-    });
+    await user.save();
 
     res.status(200).json({
         success:true,
-        user,
+        message:"Profile Updated Successfully"
     })
-});
+
+})
 
 // Update User Avatar Profile Pic
 export const updateAvatar = catchAsyncError(async(req, res, next)=>{
