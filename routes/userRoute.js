@@ -1,5 +1,6 @@
 import express from "express";
 import {allUsers, 
+    contactForm, 
     deleteUser, 
     getSingleUser, 
     getUserDetails, 
@@ -28,6 +29,9 @@ router.route("/me/update").put(isAuthenticatedUser, updateUserProfile);
 router.route("/me/update/avatar").put(isAuthenticatedUser,singleUpload,updateAvatar);
 
 router.route("/password/update").put(isAuthenticatedUser, updateUserPassword);
+
+router.route("/contact").post(contactForm);
+
 
 
 
